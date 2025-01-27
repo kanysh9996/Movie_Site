@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 
@@ -15,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = Profile.objects.create_user(**validated_data)
         return user
+
 
     def to_representation(self, instance):
         refresh = RefreshToken.for_user(instance)
@@ -58,7 +58,6 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = ['country_name']
 
 
-
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
@@ -81,6 +80,7 @@ class DirectorPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = DirectorPhoto
         fields  = ['director_image']
+
 
 class DirectorSerializer(serializers.ModelSerializer):
     director_image = DirectorPhotoSerializer(many=True, read_only=True)
@@ -106,7 +106,6 @@ class ActorSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
         fields = ['actor_name']
-
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -144,7 +143,6 @@ class MovieListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ['id', 'movie_name', 'year', 'country', 'genre', 'rating']
-
 
 
 class CountryListSerializer(serializers.ModelSerializer):
@@ -190,6 +188,7 @@ class GenreDetailSerializer(serializers.ModelSerializer):
         model = Genre
         fields = ['genre']
 
+
 class FavoriteMovieSerializer(serializers.ModelSerializer):
     movie = MovieListSerializer(read_only=True)
     movie_id = serializers.PrimaryKeyRelatedField(queryset=Movie.objects.all(), write_only=True, source='movie')
@@ -204,6 +203,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ['id', 'movie_favorite']
+
 
 class HistorySerializer(serializers.ModelSerializer):
     class Meta:
